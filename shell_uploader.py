@@ -9,19 +9,19 @@ def generate_payload(ip, port):
 $ip = '{ip}';
 $port = {port};
 $fp = fsockopen($ip, $port, $errno, $errstr, 30);
-if (!$fp) {
+if (!$fp) {{
     echo "$errstr ($errno)<br />\n";
-} else {
+}} else {{
     $out = "GET / HTTP/1.1\r\n";
     $out .= "Host: $ip\r\n";
     $out .= "Connection: Close\r\n\r\n";
     fwrite($fp, $out);
-    while (!feof($fp)) {
+    while (!feof($fp)) {{
         $in = fgets($fp, 128);
         echo $in;
-    }
+    }}
     fclose($fp);
-}
+}}
 ?>
 """
     return payload
